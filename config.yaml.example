@@ -1,0 +1,4 @@
+# Copy this file, fill out with your fields, and rename as config.yaml
+ifttt: 
+  url: 'your_ifttt_maker_webhook_url'
+  event: 'your_ifttt_webhook_event_name'

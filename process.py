@@ -44,7 +44,7 @@ def send_alert(ipaddr: str) -> None:
             ifttt = yaml.safe_load(f)['ifttt']
             url = ifttt['url']
             event = ifttt['event']
-    except (ValueError, TypeError, KeyError) as e:
+    except (FileNotFoundError, ValueError, TypeError, KeyError) as e:
         print('Encountered a fatal error:', e)
         print('Exiting...')
         sys.exit(1)

@@ -1,12 +1,12 @@
-# Public IP Address Check (with [*ipify*][ipify] and [*IFTTT*][ifttt])
+# Public IP Address Check (with *[ipify][ipify]* and *[IFTTT][ifttt]*)
 
 ## Overview
 
-This project aims to automate public IP address checking and alert via [*IFTTT*][ifttt] when a change happens.
+This project aims to automate public IP address checking and alert via *[IFTTT][ifttt]* when a change happens.
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) [*IFTTT*][ifttt] and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][ifttt]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
 
 ## Requirements
 
@@ -14,15 +14,15 @@ This code is designed around the following:
 
 - Python 3
     - `requests`
-        - `GET` with [*ipify*][ipify]
-        - `POST` with [*IFTTT*][ifttt]
+        - `GET` with *[ipify][ipify]*
+        - `POST` with *[IFTTT][ifttt]*
     - `pyyaml` for managing configuration
     - other [requirements](requirements.txt) 
 
 ## Setup
 
-1. Setup with [*IFTTT*][ifttt].
-2. Create a new applet
+1. Setup with *[IFTTT][ifttt]*.
+2. Create a new applet.
 3. For **"this"**, choose "Webhooks".
 4. Choose an **Event Name**.
     - Store this into [`config.yaml`](config.yaml.example) in `event`.
@@ -40,10 +40,16 @@ This code is designed around the following:
     - `ipaddr.yaml` will be automatically created and subsequently reused by [`process.py`](process.py)
 - [`process.py`](process.py)
     - the script for this project
+- [`config.py`](config.py)
+    - configuraton handler
+- [`ifttt.py`](ifttt.py)
+    - *[IFTTT][ifttt]* handler
+- [`ipaddr.py`](ipaddr.py)
+    - IP address retriever; currently retrieves via *[ipify][ipify]*
 
 ## Disclaimer
 
-This project is not affiliated with or endorsed by [*ipify*][ipify] or [*IFTTT*][ifttt]. See [`LICENSE`](LICENSE) for more detail.
+This project is not affiliated with or endorsed by *[ipify][ipify]* or *[IFTTT][ifttt]*. See [`LICENSE`](LICENSE) for more detail.
 
 [ipify]: https://ipify.org
 [ifttt]: https://ifttt.com

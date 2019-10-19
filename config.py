@@ -1,5 +1,4 @@
 import logging
-from typing import Dict
 
 import yaml
 
@@ -25,10 +24,10 @@ LOGGER.addHandler(CH)
 
 try:
     with open('ipaddr.yaml', 'r') as f:
-        IPADDR = yaml.safe_load(f)
-except FileNotFoundError:
+        IPADDR = yaml.safe_load(f)['ipaddr']
+except (FileNotFoundError, KeyError, TypeError, ValueError):
     """ipaddr.yaml may not exist. Ignore if it doesn't."""
-    IPADDR = {'ipaddr': None}
+    IPADDR = None
     LOGGER.info('ipaddr.yaml does not exist. Using defaults...')
 
 try:
@@ -57,12 +56,12 @@ class InvalidConfigError(Error):
         super().__init__('An invalid configuration was detected. Exiting...')
 
 
-def store_ipaddr(ipaddr: Dict[str, str]) -> None:
+def store_ipaddr(ipaddr: str) -> None:
     """Store the new IP address into file.
 
     Args:
-        ipaddr (dict): {'ipaddr': '0.0.0.0'}
+        ipaddr (str): e.g. '0.0.0.0'
 
     """
     with open('ipaddr.yaml', 'w') as f:
-        yaml.safe_dump(ipaddr, stream=f)
+        yaml.safe_dump({'ipaddr': ipaddr}, stream=f)

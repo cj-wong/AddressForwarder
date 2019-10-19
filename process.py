@@ -20,10 +20,9 @@ if __name__ == '__main__':
     print_info('Beginning public IP address check...')
     ipaddr = ipaddr.get_current_ipaddr()
     print_info(f'Got current address: {ipaddr}')
-    if config.IPADDR['ipaddr'] != ipaddr:
-        config.IPADDR['ipaddr'] = ipaddr
+    if config.IPADDR != ipaddr:
         print_info('Storing current IP address into ipaddr.yaml...')
-        config.store_ipaddr(IPADDR)
+        config.store_ipaddr(ipaddr)
         print_info('Attempting to send IFTTT webhook...')
         IFTTT = ifttt.IFTTT()
         IFTTT.send_alert(ipaddr)

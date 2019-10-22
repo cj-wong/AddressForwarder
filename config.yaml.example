@@ -1,4 +1,23 @@
 # Copy this file, fill out with your fields, and rename as config.yaml
+cloudflare:
+  zone: 'zone'
+  # Pick either token OR email and key.
+  token: 'your_cloudflare_api_token'
+  email: 'user@example'
+  key: 'your_cloudflare_api_key'
+  domain: 'example.com'
+  subdomains: [
+    # Replace subdomain with your actual subdomain.
+    # Blank subdomains are valid and are treated as:
+    #   example.com
+    # To set as blank, use ''
+    subdomain: {
+      identifier: 'id',
+      # yes -> True, no -> False
+      proxied: yes
+    },
+  ]
+
 ifttt: 
   url: 'your_ifttt_maker_webhook_url'
   event: 'your_ifttt_webhook_event_name'

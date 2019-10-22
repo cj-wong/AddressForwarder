@@ -38,9 +38,23 @@ except (FileNotFoundError, KeyError, TypeError, ValueError):
 try:
     with open('config.yaml') as f:
         CONF = yaml.safe_load(f)
+    CF = CONF['cloudflare']
+    if CF['token'] and not CF['email']:
+        AUTH = [CF['token']]
+    elif CF['email'] and CF['key']:
+        AUTH = [CF['email'], CF['key']]
+    else:
+        LOGGER.error('Pick either token OR email and key.')
+        raise InvalidConfigError
+    ZONE = CF['zone']
+    DOMAIN = CF['domain']
+    SUBDOMAINS = CF['subdomains']
 except FileNotFoundError as e:
     print('Encountered a fatal error:', e)
     LOGGER.error(e)
+    raise InvalidConfigError
+except KeyError:
+    LOGGER.error('Cloudflare configuration is missing')
     raise InvalidConfigError
 
 

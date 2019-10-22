@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.2] - 2019-10-22
+### Changed
+- `StreamHandler` is set to `INFO`, to output messages to `stdout`/`stderr`
+
+### Fixed
+- Blank/invalid IP addresses should no longer be ignored
+
 ## [1.0.1] - 2019-10-19
 ### Added
 - logging; accessed in [`config.py`](config.py)

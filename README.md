@@ -4,6 +4,12 @@
 
 This project aims to automate public IP address checking and alert via *[IFTTT][ifttt]* when a change happens.
 
+## Branches
+
+- `master`
+- `cloudflare`
+    - for use with *Cloudflare*
+
 ## Usage
 
 After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][ifttt]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
@@ -29,7 +35,7 @@ This code is designed around the following:
 5. Pick an appropriate destination for **"that"**, e.g. "Email".
 6. Save the applet after you've filled everything per your desire.
 7. Retrieve your personal URL from [here](https://ifttt.com/maker_webhooks/settings).
-    - Store the part after `https://maker.ifttt/use/` into [`config.yaml`] in `url`.
+    - Store the part after `https://maker.ifttt/use/` into [`config.yaml`](config.yaml.example) in `url`.
 
 ## Project Files
 

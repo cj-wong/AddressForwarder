@@ -5,27 +5,16 @@ import ifttt
 import ipaddr
 
 
-def print_info(message: str) -> None:
-    """Prints and logs to INFO.
-
-    Args:
-        message (str): the message to print and log
-
-    """
-    print(message)
-    config.LOGGER.info(message)
-
-
 if __name__ == '__main__':
-    print_info('Beginning public IP address check...')
+    config.LOGGER.info('Beginning public IP address check...')
     ipaddr = ipaddr.get_current_ipaddr()
-    print_info(f'Got current address: {ipaddr}')
+    config.LOGGER.info(f'Got current address: {ipaddr}')
     if config.IPADDR != ipaddr:
-        print_info('Storing current IP address into ipaddr.yaml...')
+        config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
         config.store_ipaddr(ipaddr)
-        print_info('Attempting to send IFTTT webhook...')
+        config.LOGGER.info('Attempting to send IFTTT webhook...')
         IFTTT = ifttt.IFTTT()
         IFTTT.send_alert(ipaddr)
-        print_info('Completed. Exiting...')
+        config.LOGGER.info('Completed. Exiting...')
     else:
-        print_info('No changes. Exiting...')
+        config.LOGGER.info('No changes. Exiting...')

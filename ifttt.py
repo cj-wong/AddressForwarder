@@ -15,9 +15,7 @@ class IFTTT:
             self.url = conf['url']
             self.event = conf['event']
         except (KeyError, TypeError, ValueError) as e:
-            message = 'Could not initialize IFTTT configuration.'
-            print(message)
-            config.LOGGER.error(message)
+            config.LOGGER.error('Could not initialize IFTTT configuration.')
             raise config.InvalidConfigError
 
     def send_alert(self, ipaddr: str) -> None:
@@ -33,5 +31,4 @@ class IFTTT:
            headers={'Content-Type': 'application/json'},
            json={'value1': ipaddr}
            )
-        print('Response:', response)
-        config.LOGGER.info(response)
+        config.LOGGER.info(f'Response: {response}')

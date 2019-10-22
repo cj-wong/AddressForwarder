@@ -10,13 +10,18 @@ FH = logging.FileHandler('ipaddr.log')
 FH.setLevel(logging.DEBUG)
 
 CH = logging.StreamHandler()
-CH.setLevel(logging.WARNING)
+CH.setLevel(logging.INFO)
 
-FORMATTER = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+FH.setFormatter(
+    logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
     )
-FH.setFormatter(FORMATTER)
-CH.setFormatter(FORMATTER)
+CH.setFormatter(
+    logging.Formatter(
+        '%(levelname)s - %(message)s'
+        )
+    )
 
 LOGGER.addHandler(FH)
 LOGGER.addHandler(CH)

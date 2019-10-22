@@ -10,7 +10,9 @@ if __name__ == '__main__':
     config.LOGGER.info('Beginning public IP address check...')
     ipaddr = ipaddr.get_current_ipaddr()
     config.LOGGER.info(f'Got current address: {ipaddr}')
-    if config.IPADDR != ipaddr:
+    if '.' not in ipaddr or not ipaddr:
+        config.LOGGER.warn(f'IP address appears invalid. Exiting...')
+    elif config.IPADDR != ipaddr:
         config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
         config.store_ipaddr(ipaddr)
         config.LOGGER.info('Attempting to update DNS records on Cloudflare...')

@@ -38,9 +38,9 @@ class Cloudflare:
         """
         for label, params in subdomain.items():
             if label:
-                url = f"{label}.{config['domain']}"
+                url = f"{label}.{config.DOMAIN}"
             else:
-                url = config['domain']
+                url = config.DOMAIN
 
             update = {
                 'type': 'A',

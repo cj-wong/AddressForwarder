@@ -66,4 +66,4 @@ class Cloudflare:
 
         """
         for subdomain in self.subdomains:
-            self.update_subdomain(subdomain)
+            self.update_subdomain(subdomain, ipaddr)

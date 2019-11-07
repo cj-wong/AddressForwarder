@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Fixed missing argument in [`cloudflare.py`](cloudflare.py) `update_subdomain`
 - Fixed `config['domain']` -> `config.DOMAIN`
+- Added missing `requests` import to [`ifttt.py`](ifttt.py)
+- On changing *Cloudflare* DNS records, changed the `data=` parameter to `json=`. Would not work with `data=`.
 
 ## [1.1-cf] - 2019-10-22
 ### Added

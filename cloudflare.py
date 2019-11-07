@@ -52,7 +52,7 @@ class Cloudflare:
 
             response = requests.put(
                 f"{self.url}/{params['identifier']}",
-                data=update,
+                json=update,
                 headers=self.headers
                 )
 

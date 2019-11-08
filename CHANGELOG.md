@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.1.2-cf] - 2019-11-08
+### Fixed
+- Fixed issue when *IPify* returns an application error. Added an error to raise.
+
 ## [1.1.1-cf] - 2019-11-07
 ### Fixed
 - Fixed missing argument in [`cloudflare.py`](cloudflare.py) `update_subdomain`

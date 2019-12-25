@@ -22,7 +22,7 @@ class Cloudflare:
                 'X-Auth-Email': email,
                 'X-Auth-Key': key
                 }
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             token, = config.AUTH
             self.headers = {'Authorization': f'Bearer {token}'}
 

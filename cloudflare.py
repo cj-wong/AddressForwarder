@@ -15,15 +15,17 @@ class Cloudflare:
             f'{config.ZONE}/dns_records'
             )
         self.subdomains = config.SUBDOMAINS
-        if len(config.AUTH) == 1:
-            token, = config.AUTH
-            self.headers = {'Authorization': f'Bearer {token}'}
-        else:
+
+        try:
             email, key = config.AUTH
             self.headers = {
                 'X-Auth-Email': email,
                 'X-Auth-Key': key
                 }
+        except TypeError, ValueError:
+            token, = config.AUTH
+            self.headers = {'Authorization': f'Bearer {token}'}
+
         self.headers['Content-Type'] = 'application/json'
 
     def update_subdomain(

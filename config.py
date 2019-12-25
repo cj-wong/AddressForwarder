@@ -6,7 +6,11 @@ import yaml
 LOGGER = logging.getLogger('public_ipaddr_check')
 LOGGER.setLevel(logging.DEBUG)
 
-FH = logging.FileHandler('ipaddr.log')
+FH = logging.handlers.RotatingFileHandler(
+    'ipaddr.log',
+    maxBytes=4096,
+    backupCount=5,
+    )
 FH.setLevel(logging.DEBUG)
 
 CH = logging.StreamHandler()
@@ -36,7 +40,7 @@ except (FileNotFoundError, KeyError, TypeError, ValueError):
     LOGGER.info('ipaddr.yaml does not exist. Using defaults...')
 
 try:
-    with open('config.yaml') as f:
+    with open('config.yaml', 'r') as f:
         CONF = yaml.safe_load(f)
     CF = CONF['cloudflare']
     if CF['token'] and not CF['email']:
@@ -50,7 +54,6 @@ try:
     DOMAIN = CF['domain']
     SUBDOMAINS = CF['subdomains']
 except FileNotFoundError as e:
-    print('Encountered a fatal error:', e)
     LOGGER.error(e)
     raise InvalidConfigError
 except KeyError:

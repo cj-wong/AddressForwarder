@@ -1,18 +1,18 @@
-# Public IP Address Check (with *[ipify][ipify]* and *[Cloudflare][cloudflare]*)
+# Public IP Address Check (with *[ipify][IPIFY]* and *[Cloudflare][CLOUDFLARE]*)
 
 ## Overview
 
-This project aims to automate public IP address checking. When a change happens, the scripts will attempt to adjust *[Cloudflare][cloudflare]* DNS settings and optionally alert via *[IFTTT][ifttt]*.
+This project aims to automate public IP address checking. When a change happens, the scripts will attempt to adjust *[Cloudflare][CLOUDFLARE]* DNS settings and optionally alert via *[IFTTT][IFTTT]*.
 
 ## Branches
 
 - `master`
 - `cloudflare`
-    - for use with *[Cloudflare][cloudflare]*
+    - for use with *[Cloudflare][CLOUDFLARE]*
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) *[Cloudflare][cloudflare]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[Cloudflare][CLOUDFLARE]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
 
 ## Requirements
 
@@ -20,15 +20,15 @@ This code is designed around the following:
 
 - Python 3
     - `requests`
-        - `GET` with *[ipify][ipify]*
-        - *(optional)* `POST` with *[IFTTT][ifttt]*
-    - `python-cloudflare` for using the *Cloudflare* API
+        - `GET` with *[ipify][IPIFY]*
+        - `PUT` with *[Cloudflare][CLOUDFLARE]*
+        - *(optional)* `POST` with *[IFTTT][IFTTT]*
     - `pyyaml` for managing configuration
-    - other [requirements](requirements.txt) 
+    - other [requirements](requirements.txt)
 
 ## Setup
 
-1. Setup with *[Cloudflare][cloudflare]*.
+1. Setup with *[Cloudflare][CLOUDFLARE]*.
 2. Go to **"Get your API token"** on your domain overview page.
 3. Pick one of the options below:
     - **API Key**
@@ -38,7 +38,7 @@ This code is designed around the following:
 4. Record your **Zone ID**.
 5. Configure [`config.yaml`](config.yaml.example), including filling out any/all subdomains you wish to update.
 
-### (optional) *[IFTTT][ifttt]*
+### (optional) *[IFTTT][IFTTT]*
 
 1. Setup with *IFTTT*.
 2. Create a new applet.
@@ -62,16 +62,16 @@ This code is designed around the following:
 - [`config.py`](config.py)
     - configuraton handler
 - [`cloudflare.py`](cloudflare.py)
-    - *[Cloudflare][cloudflare]* handler
+    - *[Cloudflare][CLOUDFLARE]* handler
 - [`ifttt.py`](ifttt.py)
-    - *[IFTTT][ifttt]* handler
+    - *[IFTTT][IFTTT]* handler
 - [`ipaddr.py`](ipaddr.py)
-    - IP address retriever; currently retrieves via *[ipify][ipify]*
+    - IP address retriever; currently retrieves via *[ipify][IPIFY]*
 
 ## Disclaimer
 
-This project is not affiliated with or endorsed by *[ipify][ipify]* or *[IFTTT][ifttt]*. See [`LICENSE`](LICENSE) for more detail.
+This project is not affiliated with or endorsed by *[ipify][IPIFY]* or *[IFTTT][IFTTT]*. See [`LICENSE`](LICENSE) for more detail.
 
-[ipify]: https://ipify.org
-[ifttt]: https://ifttt.com
-[cloudflare]: https://www.cloudflare.com
+[IPIFY]: https://ipify.org
+[IFTTT]: https://ifttt.com
+[CLOUDFLARE]: https://www.cloudflare.com

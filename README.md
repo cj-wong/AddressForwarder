@@ -2,17 +2,17 @@
 
 ## Overview
 
-This project aims to automate public IP address checking and alert via *[IFTTT][ifttt]* when a change happens.
+This project aims to automate public IP address checking and alert via *[IFTTT][IFTTT]* when a change happens.
 
 ## Branches
 
 - `master`
 - `cloudflare`
-    - for use with *Cloudflare*
+    - for use with *[Cloudflare][CLOUDFLARE]*
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][ifttt]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][IFTTT]* and [`config.yaml`](config.yaml.example), run [`process.py`](process.py).
 
 ## Requirements
 
@@ -23,7 +23,7 @@ This code is designed around the following:
         - `GET` with *[ipify][ipify]*
         - `POST` with *[IFTTT][ifttt]*
     - `pyyaml` for managing configuration
-    - other [requirements](requirements.txt) 
+    - other [requirements](requirements.txt)
 
 ## Setup
 
@@ -49,13 +49,14 @@ This code is designed around the following:
 - [`config.py`](config.py)
     - configuraton handler
 - [`ifttt.py`](ifttt.py)
-    - *[IFTTT][ifttt]* handler
+    - *[IFTTT][IFTTT]* handler
 - [`ipaddr.py`](ipaddr.py)
-    - IP address retriever; currently retrieves via *[ipify][ipify]*
+    - IP address retriever; currently retrieves via *[ipify][IPIFY]*
 
 ## Disclaimer
 
-This project is not affiliated with or endorsed by *[ipify][ipify]* or *[IFTTT][ifttt]*. See [`LICENSE`](LICENSE) for more detail.
+This project is not affiliated with or endorsed by *[ipify][IPIFY]* or *[IFTTT][IFTTT]*. See [`LICENSE`](LICENSE) for more detail.
 
-[ipify]: https://ipify.org
-[ifttt]: https://ifttt.com
+[IPIFY]: https://ipify.org
+[IFTTT]: https://ifttt.com
+[CLOUDFLARE]: https://www.cloudflare.com

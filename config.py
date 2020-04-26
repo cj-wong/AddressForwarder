@@ -62,12 +62,7 @@ except KeyError:
     raise InvalidConfigError
 
 
-class Error(Exception):
-    """Base exception for config"""
-    pass
-
-
-class InvalidConfigError(Error):
+class InvalidConfigError(RuntimeError):
     """An invalid configuration was detected.
 
     - FileNotFoundError
@@ -75,7 +70,7 @@ class InvalidConfigError(Error):
     - TypeError
     - KeyError
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('An invalid configuration was detected. Exiting...')
 
 

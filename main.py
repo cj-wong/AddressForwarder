@@ -5,7 +5,13 @@ import ifttt
 import ipaddr
 
 
-if __name__ == '__main__':
+def main() -> None:
+    """This function runs everything: gets the current IP address,
+    checks whether it's a valid IP address string, compares against the
+    last known IP address, stores the new one if so, and sends the
+    alert via IFTTT.
+    
+    """
     config.LOGGER.info('Beginning public IP address check...')
     ipaddr = ipaddr.get_current_ipaddr()
     config.LOGGER.info(f'Got current address: {ipaddr}')
@@ -20,3 +26,7 @@ if __name__ == '__main__':
         config.LOGGER.info('Completed. Exiting...')
     else:
         config.LOGGER.info('No changes. Exiting...')
+
+
+if __name__ == '__main__':
+    main()

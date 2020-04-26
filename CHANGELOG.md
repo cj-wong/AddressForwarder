@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.1.4-cf] - 2020-04-25
+### Changed
+- Project name is now "I've moved", as "public_ipaddr_check" is wordy and not fully accurate to its purpose (at a minimum, checks *and* alerts).
+- `config.InvalidConfigError` now subclasses `RuntimeError` instead of an extraneous custom exception.
+- `process.py` was renamed [main.py](main.py).
+- The code that existed under `if __name__ == 'main':` now exists in its own function.
+- `ipaddr.APIResponseError` now subclasses `ValueError`, in the same vein as `config.InvalidConfigError`.
+- Assigned some hardcoded strings as variables instead, in case they ever need changing.
+- Updated license years
+
 ## [1.1.3-cf] - 2019-12-25
 ### Changed
 - Use `RotatingFileHandler` for logs

@@ -12,7 +12,7 @@ Ever want to know when your WAN IP address changes? You can now with *I've Moved
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][IFTTT]* and [config.yaml](config.yaml.example), run [process.py](process.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][IFTTT]* and [config.yaml](config.yaml.example), run [main.py](main.py).
 
 ## Requirements
 

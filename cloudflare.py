@@ -116,7 +116,7 @@ class Cloudflare:
 
         config.write_config()
 
-        LOGGER.info(f'Wrote config for {url}!')
+        config.LOGGER.info(f'Wrote config for {url}!')
 
         return subdomain_id
 

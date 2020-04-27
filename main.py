@@ -13,20 +13,20 @@ def main() -> None:
 
     """
     config.LOGGER.info('Beginning public IP address check...')
-    ipaddr = ipaddr.get_current_ipaddr()
-    config.LOGGER.info(f'Got current address: {ipaddr}')
-    if '.' not in ipaddr or not ipaddr:
+    ip_addr = ipaddr.get_current_ipaddr()
+    config.LOGGER.info(f'Got current address: {ip_addr}')
+    if '.' not in ip_addr or not ip_addr:
         config.LOGGER.warn(f'IP address appears invalid. Exiting...')
-    elif config.IPADDR != ipaddr:
+    elif config.IPADDR != ip_addr:
         config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
-        config.store_ipaddr(ipaddr)
+        config.store_ipaddr(ip_addr)
         config.LOGGER.info('Attempting to send IFTTT webhook...')
         IFTTT = ifttt.IFTTT()
-        IFTTT.send_alert(ipaddr)
+        IFTTT.send_alert(ip_addr)
         if config.CF_ENABLED:
             config.LOGGER.info('Attempting to update DNS records on Cloudflare...')
             cf = cloudflare.Cloudflare()
-            cf.update_all_subdomains(ipaddr)
+            cf.update_all_subdomains(ip_addr)
         config.LOGGER.info('Completed. Exiting...')
     else:
         config.LOGGER.info('No changes. Exiting...')

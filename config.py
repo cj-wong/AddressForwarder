@@ -47,6 +47,23 @@ except FileNotFoundError as e:
     LOGGER.error(e)
     raise InvalidConfigError
 
+try:
+    CF = CONF['cloudflare']
+    if CF['token'] and not CF['email']:
+        AUTH = [CF['token']]
+    elif CF['email'] and CF['key']:
+        AUTH = [CF['email'], CF['key']]
+    else:
+        LOGGER.warn('Pick either token OR email and key.')
+        CF_ENABLED = False
+    ZONE = CF['zone']
+    DOMAIN = CF['domain']
+    SUBDOMAINS = CF['subdomains']
+    CF_ENABLED = True
+except KeyError:
+    LOGGER.warn('Cloudflare configuration is missing')
+    CF_ENABLED = False
+
 
 class InvalidConfigError(RuntimeError):
     """An invalid configuration was detected.
@@ -69,3 +86,12 @@ def store_ipaddr(ipaddr: str) -> None:
     """
     with open('ipaddr.yaml', 'w') as f:
         yaml.safe_dump({'ipaddr': ipaddr}, stream=f)
+
+
+def write_config() -> None:
+    """Write the config back to file. `get_subdomain_identifier` in
+    `cloudflare.Cloudflare` uses this.
+
+    """
+    with open('config.yaml', 'w') as f:
+        yaml.safe_dump(CONF, stream=f)

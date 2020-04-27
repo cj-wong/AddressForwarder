@@ -2,17 +2,11 @@
 
 ## Overview
 
-Ever want to know when your WAN IP address changes? You can now with *I've Moved*! This project automates public IP address checking using *[ipify][IPIFY]* and alerts via *[IFTTT][IFTTT]* when a change happens. This project is helpful for monitoring dynamic WAN IP addresses, and at the moment only supports IPv4.
-
-## Branches
-
-- `master`
-- `cloudflare`
-    - automated *[Cloudflare][CLOUDFLARE]* API changes
+Ever want to know when your WAN IP address changes? You can now with *I've Moved*! This project automates public IP address checking using *[ipify][IPIFY]* and alerts via *[IFTTT][IFTTT]* when a change happens. This project is helpful for monitoring dynamic WAN IP addresses, and at the moment only supports IPv4. If *[Cloudflare][CLOUDFLARE]* configuration is added, the project will also automate updates to the DNS entries of your subdomains. Currently, only `A` records are supported.
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][IFTTT]* and [config.yaml](config.yaml.example), run [main.py](main.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[IFTTT][IFTTT]*, optionally *[Cloudflare][CLOUDFLARE]*, and [config.yaml](config.yaml.example), run [main.py](main.py).
 
 ## Requirements
 
@@ -20,14 +14,15 @@ This code is designed around the following:
 
 - Python 3
     - `requests`
-        - `GET` with *[ipify][ipify]*
-        - `POST` with *[IFTTT][ifttt]*
+        - `GET` with *[ipify][IPIFY]*
+        - `PUT` with *[Cloudflare][CLOUDFLARE]*
+        - *(optional)* `POST` with *[IFTTT][IFTTT]*
     - `pyyaml` for managing configuration
     - other [requirements](requirements.txt)
 
-## Setup
+## Setup *[IFTTT][IFTTT]*
 
-1. Setup with *[IFTTT][ifttt]*.
+1. Setup with *IFTTT*.
 2. Create a new applet.
 3. For **"this"**, choose "Webhooks".
 4. Choose an **Event Name**.
@@ -37,17 +32,32 @@ This code is designed around the following:
 7. Retrieve your personal URL from [here](https://ifttt.com/maker_webhooks/settings).
     - Store the part after `https://maker.ifttt/use/` into [config.yaml](config.yaml.example) in `url`.
 
+### (optional) Setup *[Cloudflare][CLOUDFLARE]*
+
+1. Setup with *Cloudflare*.
+2. Go to **"Get your API token"** on your domain overview page.
+3. Pick one of the options below:
+    - **API Key**
+        - View your **"Global API Key"**. You must use your e-mail address registered to *Cloudflare*.
+    - **API Token**
+        - Create a token. Set permissions as you like; this token should be able to *edit* the intended zone (domain).
+4. Record your **Zone ID**.
+5. Configure [config.yaml](config.yaml.example), including filling out any/all subdomains you wish to update.
+    - You may choose to run `python cloudflare.py` to save subdomain identifiers, as they are necessary for updates. 
+
 ## Project Files
 
 - [config.yaml.example](config.yaml.example)
     - template configuration; copy to `config.yaml` and follow [setup](#setup)
 - [ipaddr.yaml.example](ipaddr.yaml.example)
     - a literal example file; do not use or manipulate this
-    - `ipaddr.yaml` will be automatically created and subsequently reused by [process.py](process.py)
-- [process.py](process.py)
+    - `ipaddr.yaml` will be automatically created and subsequently reused by [main.py](main.py)
+- [main.py](main.py)
     - the script for this project
 - [config.py](config.py)
     - configuraton handler
+- [cloudflare.py](cloudflare.py)
+    - *[Cloudflare][CLOUDFLARE]* handler
 - [ifttt.py](ifttt.py)
     - *[IFTTT][IFTTT]* handler
 - [ipaddr.py](ipaddr.py)
@@ -55,7 +65,7 @@ This code is designed around the following:
 
 ## Disclaimer
 
-This project is not affiliated with or endorsed by *[ipify][IPIFY]* or *[IFTTT][IFTTT]*. See [LICENSE](LICENSE) for more detail.
+This project is not affiliated with or endorsed by *[ipify][IPIFY]*, *[IFTTT][IFTTT]*, or *[Cloudflare][CLOUDFLARE]*. See [LICENSE](LICENSE) for more detail.
 
 [IPIFY]: https://ipify.org
 [IFTTT]: https://ifttt.com

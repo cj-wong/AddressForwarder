@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [1.1.4-cf] - 2020-04-25
+## [1.2.0] - 2020-04-UNRELEASED
 ### Changed
 - Project name is now "I've moved", as "public_ipaddr_check" is wordy and not fully accurate to its purpose (at a minimum, checks *and* alerts).
 - `config.InvalidConfigError` now subclasses `RuntimeError` instead of an extraneous custom exception.
@@ -11,7 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The code that existed under `if __name__ == 'main':` now exists in its own function.
 - `ipaddr.APIResponseError` now subclasses `ValueError`, in the same vein as `config.InvalidConfigError`.
 - Assigned some hardcoded strings as variables instead, in case they ever need changing.
-- Updated license years
+- Updated license years.
+- In [config.yaml](config.yaml.example), subdomains are now nested directly under `'subdomains'` instead of elements of a list/array.
+- You can now retrieve IDs of new subdomains in *Cloudflare* by calling `python cloudflare.py` and either supplying a list of subdomains separated by spaces or one time interactively. The resulting ID will be saved into [config.yaml](config.yaml.example).
 
 ## [1.1.3-cf] - 2019-12-25
 ### Changed
@@ -29,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added missing `requests` import to [`ifttt.py`](ifttt.py)
 - On changing *Cloudflare* DNS records, changed the `data=` parameter to `json=`. Would not work with `data=`.
 
-## [1.1-cf] - 2019-10-22
+## [1.1.0-cf] - 2019-10-22
 ### Added
 - *Cloudflare* update via API
 
@@ -50,6 +52,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     - [`ipaddr.py`](ipaddr.py): IP address retriever
 - Instead of `sys.exit(1)`, `config.InvalidConfigError` is raised
 
-## [1.0] - 2019-10-06
+## [1.0.0] - 2019-10-06
 ### Added
 - Initial version

@@ -1,5 +1,3 @@
-import requests
-
 import cloudflare
 import config
 import ifttt

@@ -83,3 +83,12 @@ def store_ipaddr(ipaddr: str) -> None:
     """
     with open('ipaddr.yaml', 'w') as f:
         yaml.safe_dump({'ipaddr': ipaddr}, stream=f)
+
+
+def write_config() -> None:
+    """Write the config back to file. `get_subdomain_identifier` in
+    `cloudflare.Cloudflare` uses this.
+
+    """
+    with open('config.yaml', 'w') as f:
+        yaml.safe_dump(CONF, stream=f)

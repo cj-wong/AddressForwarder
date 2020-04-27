@@ -4,7 +4,7 @@
 
 Ever want to know when your WAN IP address changes? You can now with *I've Moved*! This project automates public IP address checking using *[ipify][IPIFY]* and alerts via *[IFTTT][IFTTT]* when a change happens. This project is helpful for monitoring dynamic WAN IP addresses, and at the moment only supports IPv4.
 
-In branch `cloudflare`, the project automates updates to the DNS entries of your domains.
+In branch `cloudflare`, the project automates updates to the DNS entries of your subdomains. Currently, only `A` records are supported.
 
 ## Branches
 
@@ -14,7 +14,7 @@ In branch `cloudflare`, the project automates updates to the DNS entries of your
 
 ## Usage
 
-After installing [dependencies](#requirements) and [configuring](#setup) *[Cloudflare][CLOUDFLARE]* and [`config.yaml`](config.yaml.example), run [main.py](main.py).
+After installing [dependencies](#requirements) and [configuring](#setup) *[Cloudflare][CLOUDFLARE]* and [config.yaml](config.yaml.example), run [main.py](main.py).
 
 ## Requirements
 
@@ -38,7 +38,7 @@ This code is designed around the following:
     - **API Token**
         - Create a token. Set permissions as you like; this token should be able to *edit* the intended zone (domain).
 4. Record your **Zone ID**.
-5. Configure [`config.yaml`](config.yaml.example), including filling out any/all subdomains you wish to update.
+5. Configure [config.yaml](config.yaml.example), including filling out any/all subdomains you wish to update.
 
 ### (optional) *[IFTTT][IFTTT]*
 
@@ -63,7 +63,7 @@ This code is designed around the following:
     - the script for this project
 - [config.py](config.py)
     - configuraton handler
-- [`cloudflare.py`](cloudflare.py)
+- [cloudflare.py](cloudflare.py)
     - *[Cloudflare][CLOUDFLARE]* handler
 - [ifttt.py](ifttt.py)
     - *[IFTTT][IFTTT]* handler

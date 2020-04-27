@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [1.2.0] - 2020-04-UNRELEASED
+## [1.2.0] - 2020-04-26
 ### Changed
 - Project name is now "I've moved", as "public_ipaddr_check" is wordy and not fully accurate to its purpose (at a minimum, checks *and* alerts).
 - `config.InvalidConfigError` now subclasses `RuntimeError` instead of an extraneous custom exception.

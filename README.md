@@ -2,7 +2,11 @@
 
 ## Overview
 
-Ever want to know when your WAN IP address changes? You can now with *I've Moved*! This project automates public IP address checking using *[ipify][IPIFY]* and alerts via *[IFTTT][IFTTT]* when a change happens. This project is helpful for monitoring dynamic WAN IP addresses, and at the moment only supports IPv4. If *[Cloudflare][CLOUDFLARE]* configuration is added, the project will also automate updates to the DNS entries of your subdomains. Currently, only `A` records are supported.
+Ever want to know when your WAN IP address changes? You can now with *I've Moved!* This project automates WAN IP address checking using *[ipify][IPIFY]* and alerts via *[IFTTT][IFTTT]* when a change happens. This project is helpful for monitoring dynamic WAN IP addresses. If *[Cloudflare][CLOUDFLARE]* configuration is added, the project will also automate updates to the DNS entries of your subdomains.
+
+### Caveats
+
+Only IPv4 is supported. Consequently for *Cloudflare* functionality, only `A` records are supported.
 
 ## Usage
 
@@ -15,35 +19,36 @@ This code is designed around the following:
 - Python 3
     - `requests`
         - `GET` with *[ipify][IPIFY]*
-        - `PUT` with *[Cloudflare][CLOUDFLARE]*
-        - *(optional)* `POST` with *[IFTTT][IFTTT]*
+        - `POST` with *[IFTTT][IFTTT]*
+        - *(optional)* `PUT` with *[Cloudflare][CLOUDFLARE]*
     - `pyyaml` for managing configuration
     - other [requirements](requirements.txt)
 
 ## Setup *[IFTTT][IFTTT]*
 
-1. Setup with *IFTTT*.
-2. Create a new applet.
-3. For **"this"**, choose "Webhooks".
-4. Choose an **Event Name**.
-    - Store this into [config.yaml](config.yaml.example) in `event`.
-5. Pick an appropriate destination for **"that"**, e.g. "Email".
-6. Save the applet after you've filled everything per your desire.
-7. Retrieve your personal URL from [here](https://ifttt.com/maker_webhooks/settings).
-    - Store the part after `https://maker.ifttt/use/` into [config.yaml](config.yaml.example) in `url`.
+0. Setup with *IFTTT* by creating an account.
+1. [Create](https://ifttt.com/create) a new applet.
+2. For **"This"**, choose "Webhooks".
+3. Choose an **Event Name**. Store this into [config.yaml](config.yaml.example) in `event`.
+4. Pick an appropriate destination for **"That"**, e.g. "Email".
+5. Save the applet after you've filled everything per your desire.
+6. Retrieve your personal URL from your [webhooks](https://ifttt.com/maker_webhooks/settings) page. Record the part after `https://maker.ifttt/use/` in the configuration into `url`.
 
 ### (optional) Setup *[Cloudflare][CLOUDFLARE]*
 
-1. Setup with *Cloudflare*.
-2. Go to **"Get your API token"** on your domain overview page.
-3. Pick one of the options below:
+0. Setup with *Cloudflare*. This means adding your domain and all other subdomains to your DNS records. Your domain goes into `domain` in the configuration.
+1. On your domain overview page, record your **"Zone ID"** (in the sidebar, under **"API"**) in the configuration into `zone`.
+2. Go to **"Get your API token"** (also in the **"API"** section) on the same overview page.
+3. Pick one of the options below. *Do not use both.*
+
+    - **API Token** *(recommended)*
+        - **Create** a token. Set permissions as you like; at the minimum, this token should be able to *edit* the intended zone (domain). Record the token into `token` in the configuration.
+        - Example permissions: `Zone Settings:Read, Zone:Read, DNS:Edit`
+
     - **API Key**
-        - View your **"Global API Key"**. You must use your e-mail address registered to *Cloudflare*.
-    - **API Token**
-        - Create a token. Set permissions as you like; this token should be able to *edit* the intended zone (domain).
-4. Record your **Zone ID**.
-5. Configure [config.yaml](config.yaml.example), including filling out any/all subdomains you wish to update.
-    - You may choose to run `python cloudflare.py` to save subdomain identifiers, as they are necessary for updates. 
+        - **View** your **"Global API Key"**. You must use your e-mail address registered to *Cloudflare*. Record both the e-mail address and key into `email` and `key` in the configuration, respectively.
+
+4. Configure [config.yaml](config.yaml.example), filling out any/all subdomains you wish to update. For the base domain (no `www`), use the empty string `''`. You may choose to run `python cloudflare.py` to save subdomain identifiers, as they are necessary for updates. 
 
 ## Project Files
 

@@ -7,13 +7,18 @@ cloudflare:
   key: 'your_cloudflare_api_key'
   domain: 'example.com'
   subdomains:
-    # Replace subdomain with your actual subdomain.
-    # Blank subdomains are valid and are treated as:
-    #   example.com
-    # To set as blank, use ''
+    # Replace 'subdomain' with your actual subdomain.
+    # e.g. if you want to manage 'www.example.com', the subdomain is 'www'.
+    # An empty string '' can be used. This will point to your base domain.
+    # e.g. example.com
     subdomain:
+      # You can run `python cloudflare.py` to automatically get identifiers.
+      # If you choose to do so, you can skip listing subdomains here and only
+      # supply them to the command
       identifier: 'id'
-      # yes -> True, no -> False
+      # Do you want this subdomain to be proxied?
+      # Cloudflare will offer to mask your WAN IP address if you choose so.
+      # Options: yes, no
       proxied: yes
 
 ifttt: 

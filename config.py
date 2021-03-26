@@ -4,32 +4,29 @@ import logging.handlers
 import yaml
 
 
-LOGGER = logging.getLogger('public_ipaddr_check')
+_LOGGER_NAME = 'public_ipaddr_check'
+
+LOGGER = logging.getLogger(_LOGGER_NAME)
 LOGGER.setLevel(logging.DEBUG)
 
-FH = logging.handlers.RotatingFileHandler(
-    'ipaddr.log',
-    maxBytes=4096,
+_FH = logging.handlers.RotatingFileHandler(
+    f'{_LOGGER_NAME}.log',
+    maxBytes=40960,
     backupCount=5,
     )
-FH.setLevel(logging.DEBUG)
+_FH.setLevel(logging.DEBUG)
 
-CH = logging.StreamHandler()
-CH.setLevel(logging.INFO)
+_CH = logging.StreamHandler()
+_CH.setLevel(logging.WARNING)
 
-FH.setFormatter(
-    logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        )
+_FORMATTER = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-CH.setFormatter(
-    logging.Formatter(
-        '%(levelname)s - %(message)s'
-        )
-    )
+_FH.setFormatter(_FORMATTER)
+_CH.setFormatter(_FORMATTER)
 
-LOGGER.addHandler(FH)
-LOGGER.addHandler(CH)
+LOGGER.addHandler(_FH)
+LOGGER.addHandler(_CH)
 
 
 try:

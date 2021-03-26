@@ -1,4 +1,5 @@
 # Copy this file, fill out with your fields, and rename as config.yaml
+---
 cloudflare:
   zone: 'zone'
   # Pick either token OR email and key.
@@ -18,9 +19,10 @@ cloudflare:
       identifier: 'id'
       # Do you want this subdomain to be proxied?
       # Cloudflare will offer to mask your WAN IP address if you choose so.
-      # Options: yes, no
-      proxied: yes
+      # Options: true, false
+      proxied: true
 
-ifttt: 
+ifttt:
   url: 'your_ifttt_maker_webhook_url'
   event: 'your_ifttt_webhook_event_name'
+...

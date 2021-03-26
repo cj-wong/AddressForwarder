@@ -11,3 +11,5 @@ ipaddr.yaml
 config.yaml
 ipaddr.log
 ipaddr.log.[1-5]
+public_ipaddr_check.log
+public_ipaddr_check.log.[1-5]

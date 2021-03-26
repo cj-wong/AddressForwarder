@@ -9,7 +9,7 @@ URL = 'https://api.ipify.org'
 
 
 def get_current_ipaddr() -> str:
-    """Retrieves the current public IP address using ipify.
+    """Retrieve the current public IP address using ipify.
 
     Returns:
         str: the IP address
@@ -27,7 +27,9 @@ def get_current_ipaddr() -> str:
 
 class APIResponseError(ValueError):
     """The *ipify* API did not return a valid IP address."""
-    def __init__(self, response) -> None:
+
+    def __init__(self, response: str) -> None:
+        """Initialize the error with a message."""
         super().__init__(
             f'{URL} did not return a valid IP address. '
             f'Response: {response}'

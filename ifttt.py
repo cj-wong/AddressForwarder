@@ -5,6 +5,7 @@ import config
 
 URL = 'https://maker.ifttt.com/trigger'
 
+
 class IFTTT:
     """IFTTT handler.
 
@@ -27,21 +28,19 @@ class IFTTT:
             self.event = conf['event']
         except (KeyError, TypeError, ValueError) as e:
             config.LOGGER.error(
-                f'Could not initialize IFTTT configuration. {e}'
-                )
+                f'Could not initialize IFTTT configuration. {e}')
             raise config.InvalidConfigError
 
     def send_alert(self, ipaddr: str) -> None:
-        """Sends an alert via IFTTT if the public IP address is different.
+        """Send an alert via IFTTT if the public IP address is different.
 
         Args:
             ipaddr (str): the current public IP address
 
         """
-
         response = requests.post(
-           f"{URL}/{self.event}/with/key/{self.url}",
-           headers={'Content-Type': 'application/json'},
-           json={'value1': ipaddr}
-           )
+            f"{URL}/{self.event}/with/key/{self.url}",
+            headers={'Content-Type': 'application/json'},
+            json={'value1': ipaddr}
+            )
         config.LOGGER.info(f'Response: {response}')

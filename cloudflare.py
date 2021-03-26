@@ -12,31 +12,52 @@ SUBDOMAINS = Dict[str, PARAMS]
 URL = 'https://api.cloudflare.com/client/v4/zones'
 
 
-class SubdomainValueAlreadySet(ValueError):
+class SubdomainIDAlreadySet(ValueError):
     """A value already exists in the subdomain attribute."""
-    def __init__(self, subdomain: str, field: str) -> None:
+
+    def __init__(self, subdomain: str) -> None:
+        """Initialize the error with a message.
+
+        Args:
+            subdomain (str): subdomain of the domain
+
+        """
         super().__init__(
-            f'The {field} field for {subdomain} already has a value. '
+            f'The ID field for {subdomain} already has a value. '
             'Delete the value if you want to re-run the function.'
             )
 
 
 class NoRecords(ValueError):
     """No DNS records were found given a subdomain."""
+
     def __init__(self, subdomain: str) -> None:
+        """Initialize the error with a message.
+
+        Args:
+            subdomain (str): subdomain of the domain
+
+        """
         super().__init__(f'No subdomains were found matching {subdomain}.')
 
 
 class TooManyRecords(ValueError):
     """Too many DNS records were found given a subdomain."""
+
     def __init__(self, subdomain: str) -> None:
+        """Initialize the error with a message.
+
+        Args:
+            subdomain (str): subdomain of the domain
+
+        """
         super().__init__(f'Too many DNS records were found for {subdomain}.')
 
 
-
 class Cloudflare:
-    """Cloudflare handler class. Currently, you can only update domains
-    and subdomains.
+    """Cloudflare handler class.
+
+    Currently, you can only update domains and subdomains.
 
     Attributes:
         headers (Dict[str, str]): headers to pass via `requests.put`;
@@ -66,8 +87,7 @@ class Cloudflare:
         self.headers['Content-Type'] = 'application/json'
 
     def get_subdomain_identifier(self, subdomain: str) -> str:
-        """Get a subdomain identifier so that it may be used in the
-        configuration file.
+        """Get a subdomain identifier to use in the configuration file.
 
         Args:
             subdomain (str): the name of the DNS record to check;
@@ -85,7 +105,7 @@ class Cloudflare:
 
         try:
             if config.SUBDOMAINS[subdomain]['identifier']:
-                raise SubdomainValueAlreadySet(subdomain, 'id')
+                raise SubdomainIDAlreadySet(subdomain)
         except KeyError:
             pass
 
@@ -120,9 +140,9 @@ class Cloudflare:
 
         return subdomain_id
 
-    def update_subdomain(self, subdomain: str, ipaddr: str, params: PARAMS
-        ) -> None:
-        """Update a specific `subdomain`.
+    def update_subdomain(
+            self, subdomain: str, ipaddr: str, params: PARAMS) -> None:
+        """Update a specific subdomain.
 
         Args:
             subdomain (str): the name of the DNS record to check;
@@ -154,7 +174,7 @@ class Cloudflare:
         config.LOGGER.info(f'Response: {response}')
 
     def update_all_subdomains(self, ipaddr: str) -> None:
-        """Update all subdomains. Calls `update_subdomain`.
+        """Update all subdomains. Call `update_subdomain()` in batch.
 
         Args:
             ipaddr (str): the current IP address, e.g. 0.0.0.0

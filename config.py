@@ -4,6 +4,21 @@ import logging.handlers
 import yaml
 
 
+class InvalidConfigError(RuntimeError):
+    """An invalid configuration was detected.
+
+    - FileNotFoundError
+    - ValueError
+    - TypeError
+    - KeyError
+
+    """
+
+    def __init__(self) -> None:
+        """Initialize the error with a message."""
+        super().__init__('An invalid configuration was detected. Exiting...')
+
+
 _LOGGER_NAME = 'public_ipaddr_check'
 
 LOGGER = logging.getLogger(_LOGGER_NAME)
@@ -62,18 +77,6 @@ except KeyError:
     CF_ENABLED = False
 
 
-class InvalidConfigError(RuntimeError):
-    """An invalid configuration was detected.
-
-    - FileNotFoundError
-    - ValueError
-    - TypeError
-    - KeyError
-    """
-    def __init__(self) -> None:
-        super().__init__('An invalid configuration was detected. Exiting...')
-
-
 def store_ipaddr(ipaddr: str) -> None:
     """Store the new IP address into file.
 
@@ -86,8 +89,9 @@ def store_ipaddr(ipaddr: str) -> None:
 
 
 def write_config() -> None:
-    """Write the config back to file. `get_subdomain_identifier` in
-    `cloudflare.Cloudflare` uses this.
+    """Write the config back to file.
+
+    `get_subdomain_identifier` in `cloudflare.Cloudflare` uses this.
 
     """
     with open('config.yaml', 'w') as f:

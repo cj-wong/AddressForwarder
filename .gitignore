@@ -7,9 +7,9 @@
 *.pyc
 
 # Project-specific files
+ipaddr.json
 ipaddr.yaml
+config.json
 config.yaml
-ipaddr.log
-ipaddr.log.[1-5]
-public_ipaddr_check.log
-public_ipaddr_check.log.[1-5]
+*.log
+*.log.*

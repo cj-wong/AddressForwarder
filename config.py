@@ -1,23 +1,10 @@
+import json
 import logging
 import logging.handlers
+import sys
 
-import yaml
 
-
-class InvalidConfigError(RuntimeError):
-    """An invalid configuration was detected.
-
-    - FileNotFoundError
-    - ValueError
-    - TypeError
-    - KeyError
-
-    """
-
-    def __init__(self) -> None:
-        """Initialize the error with a message."""
-        super().__init__('An invalid configuration was detected. Exiting...')
-
+# Logger related
 
 _LOGGER_NAME = 'public_ipaddr_check'
 
@@ -43,21 +30,36 @@ _CH.setFormatter(_FORMATTER)
 LOGGER.addHandler(_FH)
 LOGGER.addHandler(_CH)
 
+# Configuration file reading and validating
+
+_CONFIG_LOAD_ERRORS = (
+    FileNotFoundError,
+    KeyError,
+    TypeError,
+    ValueError,
+    json.decoder.JSONDecodeError,
+    )
+
+EXIT_CONFIG_INVALID = 1
+EXIT_CONFIG_DEFAULT = 2
+# Other exit codes continue here.
 
 try:
-    with open('ipaddr.yaml', 'r') as f:
-        IPADDR = yaml.safe_load(f)['ipaddr']
-except (FileNotFoundError, KeyError, TypeError, ValueError):
-    """ipaddr.yaml may not exist. Ignore if it doesn't."""
-    IPADDR = None
-    LOGGER.info('ipaddr.yaml does not exist. Using defaults...')
+    with open('config.json') as f:
+        CONF = json.load(f)
+except _CONFIG_LOAD_ERRORS as e:
+    LOGGER.error("config.json doesn't exist or is malformed.")
+    LOGGER.error(f'More information: {e}')
+    sys.exit(EXIT_CONFIG_INVALID)
 
-try:
-    with open('config.yaml', 'r') as f:
-        CONF = yaml.safe_load(f)
-except FileNotFoundError as e:
-    LOGGER.error(e)
-    raise InvalidConfigError
+with open('config.json.example') as f:
+    _DEFAULTS = json.load(f)
+
+if _DEFAULTS == CONF:
+    LOGGER.error(
+        "config.json has default values. Modify them with your own.")
+    sys.exit(EXIT_CONFIG_DEFAULT)
+# Other configuration validation continues here.
 
 try:
     CF = CONF['cloudflare']
@@ -67,14 +69,28 @@ try:
         AUTH = [CF['email'], CF['key']]
     else:
         LOGGER.warn('Pick either token OR email and key.')
-        CF_ENABLED = False
+        sys.exit(EXIT_CONFIG_INVALID)
     ZONE = CF['zone']
     DOMAIN = CF['domain']
     SUBDOMAINS = CF['subdomains']
-    CF_ENABLED = True
 except KeyError:
-    LOGGER.warn('Cloudflare configuration is missing')
-    CF_ENABLED = False
+    LOGGER.warn('Cloudflare configuration is missing or incomplete.')
+    sys.exit(EXIT_CONFIG_INVALID)
+
+try:
+    WEBHOOKS = CONF['webhooks']
+except KeyError:
+    LOGGER.warn("No webhooks were defined.")
+
+try:
+    with open('ipaddr.yaml', 'r') as f:
+        IPADDR = json.load(f)['ipaddr']
+except (FileNotFoundError, KeyError, TypeError, ValueError):
+    """ipaddr.yaml may not exist. Ignore if it doesn't."""
+    IPADDR = None
+    LOGGER.info('ipaddr.yaml does not exist. Using defaults...')
+
+# Other configuration
 
 
 def store_ipaddr(ipaddr: str) -> None:
@@ -84,8 +100,8 @@ def store_ipaddr(ipaddr: str) -> None:
         ipaddr (str): e.g. '0.0.0.0'
 
     """
-    with open('ipaddr.yaml', 'w') as f:
-        yaml.safe_dump({'ipaddr': ipaddr}, stream=f)
+    with open('ipaddr.json', 'w') as f:
+        json.dump({'ipaddr': ipaddr}, f)
 
 
 def write_config() -> None:
@@ -94,5 +110,5 @@ def write_config() -> None:
     `get_subdomain_identifier` in `cloudflare.Cloudflare` uses this.
 
     """
-    with open('config.yaml', 'w') as f:
-        yaml.safe_dump(CONF, stream=f)
+    with open('config.json', 'w') as f:
+        json.dump(CONF, f)

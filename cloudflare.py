@@ -54,6 +54,20 @@ class TooManyRecords(ValueError):
         super().__init__(f'Too many DNS records were found for {subdomain}.')
 
 
+def normalize_subdomain(subdomain: str) -> str:
+    """Normalize a subdomain to a full domain.
+
+    Args:
+        subdomain (str): subdomain of a domain; may be empty to represent the
+            base domain
+
+    Returns:
+        str: the normalized full subdomain
+
+    """
+    return config.DOMAIN if not subdomain else f'{subdomain}.{config.DOMAIN}'
+
+
 class Cloudflare:
     """Cloudflare handler class.
 
@@ -74,19 +88,19 @@ class Cloudflare:
         self.url = (f'{URL}/{config.ZONE}/dns_records')
         self.subdomains = config.SUBDOMAINS
 
-        try:
+        if len(config.AUTH) == 2:
             email, key = config.AUTH
             self.headers = {
                 'X-Auth-Email': email,
                 'X-Auth-Key': key
                 }
-        except (TypeError, ValueError):
+        elif config.AUTH:
             token, = config.AUTH
             self.headers = {'Authorization': f'Bearer {token}'}
 
         self.headers['Content-Type'] = 'application/json'
 
-    def get_subdomain_identifier(self, subdomain: str) -> str:
+    def get_subdomain_identifier(self, subdomain: str) -> None:
         """Get a subdomain identifier to use in the configuration file.
 
         Args:
@@ -96,25 +110,25 @@ class Cloudflare:
         """
         if not subdomain: # '' for only domain, no subdomain
             subdomain = ''
-            url = config.DOMAIN
+
+        url = normalize_subdomain(subdomain)
+
+        for subd in config.SUBDOMAINS:
+            if subd['subdomain'] == subdomain:
+                params: PARAMS = subd
+                append = False
+                break
         else:
-            url = f'{subdomain}.{config.DOMAIN}'
+            params = {'subdomain': subdomain}
+            append = True
 
-        if subdomain not in config.SUBDOMAINS:
-            config.SUBDOMAINS[subdomain] = {}
+        if 'identifier' in params:
+            raise SubdomainIDAlreadySet(subdomain)
 
-        try:
-            if config.SUBDOMAINS[subdomain]['identifier']:
-                raise SubdomainIDAlreadySet(subdomain)
-        except KeyError:
-            pass
-
-        try:
-            proxied = config.SUBDOMAINS[subdomain]['proxied']
-        except KeyError:
+        if 'proxied' not in params:
             # By default, set proxied to True.
             # Users may change this to False if necessary.
-            proxied = True
+            params['proxied'] = True
 
         response = requests.get(
             f'{self.url}?type=A&name={url}',
@@ -125,37 +139,31 @@ class Cloudflare:
             raise TooManyRecords(subdomain)
 
         try:
-            subdomain_id = result[0]['id']
+            params['identifier'] = result[0]['id']
         except IndexError:
             raise NoRecords(subdomain)
 
-        config.SUBDOMAINS[subdomain] = {
-            'identifier': subdomain_id,
-            'proxied': proxied,
-            }
+        if append:
+            config.SUBDOMAINS.append(params)
+        else:
+            for subd in config.SUBDOMAINS:
+                if subd['subdomain'] == subdomain:
+                    subd = params
 
         config.write_config()
-
         config.LOGGER.info(f'Wrote config for {url}!')
 
-        return subdomain_id
-
-    def update_subdomain(
-            self, subdomain: str, ipaddr: str, params: PARAMS) -> None:
+    def update_subdomain(self, ipaddr: str, params: PARAMS) -> None:
         """Update a specific subdomain.
 
         Args:
-            subdomain (str): the name of the DNS record to check;
-                can be empty string ('') to represent only the domain
             ipaddr (str): the current IP address, e.g. 0.0.0.0
             params (PARAMS): a dictionary of the subdomain attributes,
-                identifier (str) and proxied (bool)
+                subdomain name (str), identifier (str), proxied (bool)
 
         """
-        if subdomain:
-            url = f"{subdomain}.{config.DOMAIN}"
-        else:
-            url = config.DOMAIN
+        subdomain = str(params['subdomain'])
+        url = normalize_subdomain(subdomain)
 
         update = {
             'type': 'A',
@@ -180,8 +188,8 @@ class Cloudflare:
             ipaddr (str): the current IP address, e.g. 0.0.0.0
 
         """
-        for subdomain, params in self.subdomains.items():
-            self.update_subdomain(subdomain, ipaddr, params)
+        for params in self.subdomains:
+            self.update_subdomain(ipaddr, params)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
-import cloudflare
 import config
-import ipaddr
-import webhook
+from AddressForwarder import cloudflare
+from AddressForwarder import ipaddr
+from AddressForwarder import webhook
 
 
 def main() -> None:

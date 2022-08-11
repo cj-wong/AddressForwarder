@@ -3,6 +3,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.0] - 2022-08-11
+### Added
+- Added multiple webhook support.
+- User-configurable messages are allowed for webhooks now.
+- Added additional APIs for retrieving IP addresses. (Resolves #2.)
+- Added initial support for IPv6 addresses. However, two API sources do not have a way to force IPv4/IPv6, so it depends on their detection. (Resolves #3.)
+
+### Changed
+- The configuration is subtly changed -- for Cloudflare, subdomains are instead placed in a list in the configuration. Check `README.md` for more information.
+- Cloudflare support is now mandatory.
+
+### Removed
+- Removed `pyyaml` and all YAML files. JSON is in the standard library and the configuration file isn't complex enough to warrant staying with YAML. For information on migrating old configuration to the new JSON-based configuration, check `README.md`.
+- Removed hard-coded IFTTT support. Instead, general webhooks are supported.
+
 ## [1.2.5] - 2021-08-29
 ### Security
 - Updated `requests` and its dependencies.

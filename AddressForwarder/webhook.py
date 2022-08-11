@@ -19,10 +19,15 @@ def send_webhooks(params: Dict[str, str]) -> None:
     try:
         for webhook in config.WEBHOOKS:
             url = webhook['url']
-            message = webhook['message'].format(**params)
+            message = webhook['message']
             if type(message) is dict:
-                response = requests.post(url, headers=HEADERS, json=message)
+                new = {
+                    k.format(**params): v.format(**params)
+                    for k, v in message.items()
+                    }
+                response = requests.post(url, headers=HEADERS, json=new)
             else:
+                message = message.format(**params)
                 response = requests.post(url, headers=HEADERS, data=message)
             config.LOGGER.info(f"Response: {response}")
     except AttributeError:

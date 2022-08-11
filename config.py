@@ -83,25 +83,39 @@ except KeyError:
     LOGGER.warn("No webhooks were defined.")
 
 try:
-    with open('ipaddr.yaml', 'r') as f:
-        IPADDR = json.load(f)['ipaddr']
-except (FileNotFoundError, KeyError, TypeError, ValueError):
-    """ipaddr.yaml may not exist. Ignore if it doesn't."""
-    IPADDR = None
-    LOGGER.info('ipaddr.yaml does not exist. Using defaults...')
+    with open('ipaddr.json', 'r') as f:
+        IPADDR = json.load(f)
+except FileNotFoundError:
+    """ipaddr.json may not exist. Ignore if it doesn't."""
+    IPV4 = None
+    IPV6 = None
+    LOGGER.info('ipaddr.json does not exist. Using defaults...')
+
+try:
+    IPV4 = IPADDR['ipv4']
+except (KeyError, IndexError, TypeError):
+    LOGGER.info('ipv4 not defined in ipaddr.json. Using defaults...')
+    IPV4 = None
+
+try:
+    IPV6 = IPADDR['ipv6']
+except (KeyError, IndexError, TypeError):
+    LOGGER.info('ipv6 not defined in ipaddr.json. Using defaults...')
+    IPV6 = None
 
 # Other configuration
 
 
-def store_ipaddr(ipaddr: str) -> None:
+def store_ipaddr(ipv4: str, ipv6: str) -> None:
     """Store the new IP address into file.
 
     Args:
-        ipaddr (str): e.g. '0.0.0.0'
+        ipv4 (str): e.g. '0.0.0.0'
+        ipv6 (str): e.g. '0:0:0:0:0:0'
 
     """
     with open('ipaddr.json', 'w') as f:
-        json.dump({'ipaddr': ipaddr}, f)
+        json.dump({'ipv4': ipv4, 'ipv6': ipv6}, f)
 
 
 def write_config() -> None:

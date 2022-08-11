@@ -1,3 +1,5 @@
+import sys
+
 import config
 from AddressForwarder import cloudflare
 from AddressForwarder import ipaddr
@@ -7,22 +9,28 @@ from AddressForwarder import webhook
 def main() -> None:
     """Check address and update if necessary."""
     config.LOGGER.info('Beginning public IP address check...')
-    ip_addr = ipaddr.get_ipv4()
-    config.LOGGER.info(f'Got current address: {ip_addr}')
-    if '.' not in ip_addr or not ip_addr:
-        config.LOGGER.warn(f'IP address appears invalid. Exiting...')
-    elif config.IPADDR != ip_addr:
-        config.LOGGER.info("A new IP address was detected.")
+    ipv4, ipv6 = ipaddr.get_ip_addresses()
+    config.LOGGER.info(f'Got current address: {ipv4} (IPv4), {ipv6} (IPv6)')
+    if config.IPV4 == ipv4 and config.IPV6 == ipv6:
+        config.LOGGER.info('No changes. Exiting...')
+        sys.exit(0)
+    if '.' in ipv4 and config.IPV4 != ipv4:
+        config.LOGGER.info("A new IPv4 address was detected.")
         config.LOGGER.info('Attempting to update DNS records on Cloudflare...')
         cf = cloudflare.Cloudflare()
-        cf.update_all_subdomains(ip_addr)
-        config.LOGGER.info('Attempting to send webhook...')
-        webhook.send_webhooks({"ipaddr": ip_addr})
-        config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
-        config.store_ipaddr(ip_addr)
-        config.LOGGER.info('Completed. Exiting...')
-    else:
-        config.LOGGER.info('No changes. Exiting...')
+        cf.update_all_subdomains(ipv4)
+    # Because IPv6 is not mandatory, ipv6 can be an empty string. Only apply
+    # changes if it's true.
+    if ipv6 and ':' in ipv6 and config.IPV6 != ipv6:
+        config.LOGGER.info("A new IPv6 address was detected.")
+        config.LOGGER.info('Attempting to update DNS records on Cloudflare...')
+        cf = cloudflare.Cloudflare()
+        cf.update_all_subdomains(ipv6)
+    config.LOGGER.info('Attempting to send webhook...')
+    webhook.send_webhooks({"ipaddr": ipv4})
+    config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
+    config.store_ipaddr(ipv4, ipv6)
+    config.LOGGER.info('Completed. Exiting...')
 
 
 if __name__ == '__main__':

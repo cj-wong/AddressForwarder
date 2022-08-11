@@ -30,7 +30,7 @@ if 'cloudflare' in old:
 ifttt_url = 'https://maker.ifttt.com/trigger'
 ifttt_id = old['ifttt']['url']
 ifttt_event = old['ifttt']['event']
-default_message = {'value1': "{ipaddr}"}
+default_message = {'value1': "{ipv4}, {ipv6}"}
 ifttt_wh_url = f"{ifttt_url}/{ifttt_event}/with/key/{ifttt_id}"
 ifttt_params = {
     "url": ifttt_wh_url,

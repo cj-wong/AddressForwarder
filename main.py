@@ -7,7 +7,7 @@ from AddressForwarder import webhook
 def main() -> None:
     """Check address and update if necessary."""
     config.LOGGER.info('Beginning public IP address check...')
-    ip_addr = ipaddr.get_current_ipaddr()
+    ip_addr = ipaddr.get_ipv4()
     config.LOGGER.info(f'Got current address: {ip_addr}')
     if '.' not in ip_addr or not ip_addr:
         config.LOGGER.warn(f'IP address appears invalid. Exiting...')

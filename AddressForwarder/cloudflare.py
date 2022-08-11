@@ -4,6 +4,7 @@ from typing import Dict, Union
 import requests
 
 import config
+from AddressForwarder.ipaddr import IPV4_ADDR
 
 
 PARAMS = Dict[str, Union[bool, str]]
@@ -164,9 +165,10 @@ class Cloudflare:
         """
         subdomain = str(params['subdomain'])
         url = normalize_subdomain(subdomain)
+        rec_type = 'A' if IPV4_ADDR.match(ipaddr) else 'AAAA'
 
         update = {
-            'type': 'A',
+            'type': rec_type,
             'name': url,
             'content': ipaddr,
             'ttl': 120,

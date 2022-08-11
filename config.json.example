@@ -1,0 +1,21 @@
+{
+    "cloudflare": {
+        "zone": "zone",
+        "token": "your_cloudflare_api_token",
+        "email": "user@example",
+        "domain": "example.com",
+        "subdomains": [
+            {
+                "subdomain": "subdomain",
+                "identifier": "subdomain_identifier",
+                "proxied": true
+            }
+        ]
+    },
+    "webhooks": [
+        {
+            "url": "webhook_url",
+            "message": "your_webhook_message"
+        }
+    ]
+}

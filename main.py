@@ -28,7 +28,7 @@ def main() -> None:
         cf.update_all_subdomains(ipv6)
     config.LOGGER.info('Attempting to send webhook...')
     webhook.send_webhooks({"ipaddr": ipv4})
-    config.LOGGER.info('Storing current IP address into ipaddr.yaml...')
+    config.LOGGER.info('Storing current IP address into ipaddr.json...')
     config.store_ipaddr(ipv4, ipv6)
     config.LOGGER.info('Completed. Exiting...')
 
